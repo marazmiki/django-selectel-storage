@@ -31,8 +31,5 @@ Installation
 
 .. code:: python
 
-    MIDDLEWARE_CLASSES += (
-        'domains.middleware.RequestMiddleware',
-        'domains.middleware.DynamicSiteMiddleware',
-    )
+    pass
 

@@ -7,16 +7,30 @@ from __future__ import division
 from django import test
 from django.core.files.base import ContentFile
 from django_selectel_storage.storage import SelectelStorage, SelectelStaticStorage
+import unittest
 
 
 class Test(test.TestCase):
     def setUp(self):
         self.storage = SelectelStorage()
 
-    def test_get(self):
-        self.storage.save('hello.txt', ContentFile('Hey\nhey\n\hey'))
-        print(self.storage.get('hello.txt'))
+    def test_get_text_mode(self):
+        code = 'Hey\nhey\n\hey'
+        self.storage.save('hello.txt', ContentFile(code))
+        content = self.storage._open('hello.txt')
+        self.assertEquals(code, content.read())
         self.storage.delete('hello.txt')
+
+    def test_get_binary_mode(self):
+        with open('django_selectel_storage/tests/empty.gif', 'rb') as fp:
+            self.storage.save('empty.gif', fp)
+
+            fp.seek(0)
+
+            content = self.storage._open('empty.gif', 'rb')
+
+            self.assertEquals(fp.read(), content.read())
+            self.storage.delete('empty.gif')
 
     def test_exists_not(self):
         self.assertFalse(self.storage.exists('non_exists.txt'))
@@ -42,3 +56,12 @@ class Test(test.TestCase):
         with self.settings(SELECTEL_CONTAINER_URL=url):
             storage = SelectelStorage()
             self.assertEquals(url, storage.get_base_url())
+
+    def test_(self):
+        from sorl.thumbnail import get_thumbnail
+        with open('django_selectel_storage/tests/selectel.png', 'rb') as f:
+            im = get_thumbnail(f, 'x100', crop='center', quality=99)
+
+
+
+

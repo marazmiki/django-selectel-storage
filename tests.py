@@ -2,7 +2,6 @@
 # coding: utf-8
 
 from django.conf import settings
-from django import get_version
 import sys
 import os
 
@@ -13,7 +12,9 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 settings.configure(
     TEST_RUNNER='django.test.runner.DiscoverRunner',
     ROOT_URLCONF='domains.tests.urls',
-    INSTALLED_APPS=(),
+    INSTALLED_APPS=(
+        'django_selectel_storage',
+    ),
     MIDDLEWARE_CLASSES=(
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
@@ -42,7 +43,7 @@ def main():
 
     find_pattern = 'django_selectel_storage'
 
-    test_runner = get_runner(settings)(verbosity=2, interactive=True)
+    test_runner = get_runner(settings)(verbosity=2, interactive=True, failfast=True)
     failed = test_runner.run_tests([find_pattern])
     sys.exit(failed)
 

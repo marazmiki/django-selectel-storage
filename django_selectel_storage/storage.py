@@ -67,7 +67,7 @@ class SelectelStorage(DjangoStorage):
 
     def _save(self, name, content):
         if six.PY3:
-            content = io.BytesIO(content)
+            content = io.BytesIO(content.file)
         self.container.put_stream(self._name(name), content)
         return name
 

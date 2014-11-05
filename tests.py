@@ -30,7 +30,7 @@ settings.configure(
         }
     },
     SELECTEL_USERNAME='9640_test',
-    SELECTEL_CONTAINER_NAME='test_static',
+    SELECTEL_CONTAINER_NAME='test_django_selectel_storage',
     SELECTEL_PASSWORD='3lMUkJbFQp')
 
 

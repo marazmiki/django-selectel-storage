@@ -13,21 +13,22 @@ class Test(test.TestCase):
     def setUp(self):
         self.storage = SelectelStorage()
 
+    def tearDown(self):
+        for file_ in ['hello.txt', 'empty.gif', 'exists.txt', 'file.txt']:
+            self.storage.delete(file_)
+
     def test_get_text_mode(self):
         code = 'Hey\nhey\n\hey'
         self.storage.save('hello.txt', ContentFile(code))
         content = self.storage._open('hello.txt')
         self.assertEquals(code, content.read())
-        self.storage.delete('hello.txt')
 
     def test_get_binary_mode(self):
         with open('django_selectel_storage/tests/empty.gif', 'rb') as fp:
             self.storage.save('empty.gif', fp)
             fp.seek(0)
             content = self.storage._open('empty.gif', 'rb')
-
             self.assertEquals(fp.read(), content.read())
-            self.storage.delete('empty.gif')
 
     def test_exists_not(self):
         self.assertFalse(self.storage.exists('non_exists.txt'))
@@ -35,12 +36,10 @@ class Test(test.TestCase):
     def test_exists_yes(self):
         self.storage.save('exists.txt', ContentFile('Hey'))
         self.assertTrue(self.storage.exists('exists.txt'))
-        self.storage.delete('exists.txt')
 
     def test_size_(self):
         self.storage.save('exists.txt', ContentFile('Hey'))
         self.assertEquals(3, self.storage.size('exists.txt'))
-        self.storage.delete('exists.txt')
 
     def test_url_with_container_default_name(self):
         self.assertEquals(

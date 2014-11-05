@@ -7,6 +7,8 @@ from __future__ import division
 from django.core.files.storage import Storage as DjangoStorage
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.utils import six
+import io
 import os
 import selectel
 import requests
@@ -64,6 +66,8 @@ class SelectelStorage(DjangoStorage):
         return ContentFile(self.container.get(self._name(name)))
 
     def _save(self, name, content):
+        if six.PY3:
+            content = io.BytesIO(content)
         self.container.put_stream(self._name(name), content)
         return name
 

@@ -6,8 +6,7 @@ from __future__ import absolute_import
 from __future__ import division
 from django import test
 from django.core.files.base import ContentFile
-from django_selectel_storage.storage import SelectelStorage, SelectelStaticStorage
-import unittest
+from django_selectel_storage.storage import SelectelStorage
 
 
 class Test(test.TestCase):
@@ -24,9 +23,7 @@ class Test(test.TestCase):
     def test_get_binary_mode(self):
         with open('django_selectel_storage/tests/empty.gif', 'rb') as fp:
             self.storage.save('empty.gif', fp)
-
             fp.seek(0)
-
             content = self.storage._open('empty.gif', 'rb')
 
             self.assertEquals(fp.read(), content.read())
@@ -57,11 +54,9 @@ class Test(test.TestCase):
             storage = SelectelStorage()
             self.assertEquals(url, storage.get_base_url())
 
-    def test_(self):
-        from sorl.thumbnail import get_thumbnail
-        with open('django_selectel_storage/tests/selectel.png', 'rb') as f:
-            im = get_thumbnail(f, 'x100', crop='center', quality=99)
+    def test_listdir_empty(self):
+        self.assertEquals(([], []), self.storage.listdir('/'))
 
-
-
-
+    def test_listdir_non_empty(self):
+        self.storage.save('file.txt', ContentFile('Hey'))
+        self.assertEquals(([], ['/file.txt']), self.storage.listdir('/'))

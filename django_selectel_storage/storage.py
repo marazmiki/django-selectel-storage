@@ -23,7 +23,9 @@ class SelectelStorage(DjangoStorage):
             key=self.get_key(**kwargs),
             name=self.get_container_name())
 
-        adapt = requests.adapters.HTTPAdapter(max_retries=3, pool_connections=50, pool_maxsize=50)
+        adapt = requests.adapters.HTTPAdapter(max_retries=3,
+                                              pool_connections=50,
+                                              pool_maxsize=50)
         self.container.storage.session.mount('http://', adapt)
         self.container.storage.session.mount('https://', adapt)
 
@@ -50,7 +52,10 @@ class SelectelStorage(DjangoStorage):
         if base_url:
             return base_url
         else:
-            return self.container.storage.auth.storage + '/' + self.get_container_name()
+            return '{netloc}/{container}'.format(
+                netloc=self.container.storage.auth.storage,
+                container=self.get_container_name()
+            )
 
     def _name(self, name):
         return '/' + name.lstrip('/')

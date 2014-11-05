@@ -1,5 +1,5 @@
 [run]
-source = domains
+source = django_selectel_storage
 branch = True
 
 [report]

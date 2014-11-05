@@ -27,7 +27,6 @@ Installation
 
     pip install django-selectel-storage
 
-2. Open settings.py and add middlewares into end of MIDDLEWARE_CLASSES tuple:
 
 .. code:: python
 

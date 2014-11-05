@@ -7,39 +7,49 @@ from __future__ import division
 from django import test
 from django.core.files.base import ContentFile
 from django_selectel_storage.storage import SelectelStorage
+import uuid
 
 
 class Test(test.TestCase):
     def setUp(self):
         self.storage = SelectelStorage()
+        self.uniq = uuid.uuid4().hex
 
     def tearDown(self):
         for file_ in ['hello.txt', 'empty.gif', 'exists.txt', 'file.txt']:
-            self.storage.delete(file_)
+            self.storage.delete(self._file(file_))
+
+    def _file(self, file_):
+        return self.uniq + '_' + file_
 
     def test_get_text_mode(self):
         code = 'Hey\nhey\n\hey'
-        self.storage.save('hello.txt', ContentFile(code))
-        content = self.storage._open('hello.txt')
+        filename = self._file('hello.txt')
+        self.storage.save(filename, ContentFile(code))
+        content = self.storage._open(filename)
         self.assertEquals(code, content.read())
 
     def test_get_binary_mode(self):
         with open('django_selectel_storage/tests/empty.gif', 'rb') as fp:
-            self.storage.save('empty.gif', fp)
+            filename = self._file('empty.gif')
+            self.storage.save(filename, fp)
             fp.seek(0)
-            content = self.storage._open('empty.gif', 'rb')
+            content = self.storage._open(filename, 'rb')
             self.assertEquals(fp.read(), content.read())
 
     def test_exists_not(self):
-        self.assertFalse(self.storage.exists('non_exists.txt'))
+        filename = self._file('non_exists.txt')
+        self.assertFalse(self.storage.exists(filename))
 
     def test_exists_yes(self):
-        self.storage.save('exists.txt', ContentFile('Hey'))
-        self.assertTrue(self.storage.exists('exists.txt'))
+        filename = self._file('exists.txt')
+        self.storage.save(filename, ContentFile('Hey'))
+        self.assertTrue(self.storage.exists(filename))
 
     def test_size_(self):
-        self.storage.save('exists.txt', ContentFile('Hey'))
-        self.assertEquals(3, self.storage.size('exists.txt'))
+        filename = self._file('exists.txt')
+        self.storage.save(filename, ContentFile('Hey'))
+        self.assertEquals(3, self.storage.size(filename))
 
     def test_url_with_container_default_name(self):
         self.assertEquals(
@@ -57,5 +67,6 @@ class Test(test.TestCase):
         self.assertEquals(([], []), self.storage.listdir('/'))
 
     def test_listdir_non_empty(self):
-        self.storage.save('file.txt', ContentFile('Hey'))
-        self.assertEquals(([], ['/file.txt']), self.storage.listdir('/'))
+        filename = self._file('file.txt')
+        self.storage.save(filename, ContentFile('Hey'))
+        self.assertEquals(([], ['/' + filename]), self.storage.listdir('/'))

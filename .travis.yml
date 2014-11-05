@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - "2.6"
   - "2.7"
   - "3.3"
   - "3.4"
@@ -10,12 +9,6 @@ python:
 env:
   - DJANGO=django==1.6.8
   - DJANGO=django==1.7.1
-
-
-matrix:
-  exclude:
-    - python: "2.6"
-      env: DJANGO=django==1.7.1
 
 
 install:

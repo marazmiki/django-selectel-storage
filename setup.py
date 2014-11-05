@@ -12,8 +12,8 @@ import os
 ROOT_PACKAGE = 'django-selectel-storage'
 DIR = os.path.dirname(__file__)
 VERSION = '0.1'
-DESCRIPTION = ('An application that allows you to run many '
-               'different sites on one Django instance')
+DESCRIPTION = ('This application allows you easily save media and static '
+               'files into selectel cloud storage')
 
 
 def long_description():

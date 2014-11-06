@@ -20,12 +20,14 @@ coverage:
 	coverage run --include=${project_name}/* setup.py test
 	coverage html
 
+
 clean:
 	python setup.py develop --uninstall
 	rm -rf *.egg-info *.egg
 	rm -rf htmlcov
 	rm -f .coverage
 	find . -name "*.pyc" -exec rm -rf {} \;
+
 
 coveralls:
 	coveralls --config_file=coverage.rc

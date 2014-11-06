@@ -7,8 +7,6 @@ from __future__ import division
 from django.core.files.storage import Storage as DjangoStorage
 from django.core.files.base import ContentFile
 from django.conf import settings
-from django.utils import six
-import io
 import os
 import selectel
 import requests
@@ -23,24 +21,23 @@ class SelectelStorage(DjangoStorage):
         self.container = selectel.storage.Container(
             auth=self.get_auth(**kwargs),
             key=self.get_key(**kwargs),
-            name=self.get_container_name())
-
+            name=self.get_container_name(**kwargs))
         adapt = requests.adapters.HTTPAdapter(max_retries=3,
                                               pool_connections=50,
                                               pool_maxsize=50)
         self.container.storage.session.mount('http://', adapt)
         self.container.storage.session.mount('https://', adapt)
 
-    def get_auth(self):
+    def get_auth(self, **kwargs):
         return setting('SELECTEL_USERNAME')
 
-    def get_key(self):
+    def get_key(self, **kwargs):
         return setting('SELECTEL_PASSWORD')
 
-    def get_container_name(self):
+    def get_container_name(self, **kwargs):
         return setting('SELECTEL_CONTAINER_NAME')
 
-    def get_container_url(self):
+    def get_container_url(self, **kwargs):
         return setting('SELECTEL_CONTAINER_URL')
 
     def get_requests_adapter(self):
@@ -66,8 +63,9 @@ class SelectelStorage(DjangoStorage):
         return ContentFile(self.container.get(self._name(name)))
 
     def _save(self, name, content):
-        if six.PY3:
-            content = io.BytesIO(content.file)
+        # if six.PY3:
+        #     self.container.put_stream_py3(self._name(name), content)
+        # else:
         self.container.put_stream(self._name(name), content)
         return name
 
@@ -84,7 +82,7 @@ class SelectelStorage(DjangoStorage):
     def listdir(self, path):
         return (
             [],
-            self.container.list(self._name(path)).keys()
+            list(self.container.list(self._name(path)).keys())
         )
 
     def size(self, name):
@@ -95,5 +93,5 @@ class SelectelStorage(DjangoStorage):
 
 
 class SelectelStaticStorage(SelectelStorage):
-    container_name = setting('SWIFT_STATIC_CONTAINER_NAME')
-    base_url = setting('SWIFT_STATIC_BASE_URL')
+    container_name = setting('SELECTEL_STATIC_CONTAINER_NAME')
+    base_url = setting('SELECTEL_STATIC_BASE_URL')

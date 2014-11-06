@@ -30,4 +30,4 @@ clean:
 
 
 coveralls:
-	coveralls --config_file=coverage.rc
+	coveralls

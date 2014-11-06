@@ -12,6 +12,11 @@ import selectel
 import requests
 
 
+MAX_RETRIES = 3
+POOL_CONNECTIONS = 50
+POOL_MAXSIZE = 50
+
+
 def setting(name, default=None):
     return getattr(settings, name, default)
 
@@ -22,11 +27,7 @@ class SelectelStorage(DjangoStorage):
             auth=self.get_auth(**kwargs),
             key=self.get_key(**kwargs),
             name=self.get_container_name(**kwargs))
-        adapt = requests.adapters.HTTPAdapter(max_retries=3,
-                                              pool_connections=50,
-                                              pool_maxsize=50)
-        self.container.storage.session.mount('http://', adapt)
-        self.container.storage.session.mount('https://', adapt)
+        self.setup_requests_adapter(**kwargs)
 
     def get_auth(self, **kwargs):
         return setting('SELECTEL_USERNAME')
@@ -40,8 +41,19 @@ class SelectelStorage(DjangoStorage):
     def get_container_url(self, **kwargs):
         return setting('SELECTEL_CONTAINER_URL')
 
-    def get_requests_adapter(self):
-        pass
+    def get_requests_adapter(self, **kwargs):
+        return requests.adapters.HTTPAdapter(
+            max_retries=setting('SELECTEL_MAX_RETRIES',
+                                MAX_RETRIES),
+            pool_connections=setting('SELECTEL_POOL_CONNECTIONS',
+                                     POOL_CONNECTIONS),
+            pool_maxsize=setting('SELECTEL_POOL_MAXSIZE',
+                                 POOL_MAXSIZE))
+
+    def setup_requests_adapter(self, **kwargs):
+        adapter = self.get_requests_adapter(**kwargs)
+        self.mount_requests_adapter('http://', adapter)
+        self.mount_requests_adapter('https://', adapter)
 
     def mount_requests_adapter(self, prefix, adapter):
         self.container.storage.session.mount(prefix, adapter)
@@ -86,7 +98,10 @@ class SelectelStorage(DjangoStorage):
         )
 
     def size(self, name):
-        return self.container.info(self._name(name))['content-length']
+        try:
+            return self.container.info(self._name(name))['content-length']
+        except requests.exceptions.HTTPError:
+            raise IOError('Unable get size for %s' % name)
 
     def url(self, name):
         return os.path.join(self.get_base_url().rstrip('/'),  name.lstrip('/'))

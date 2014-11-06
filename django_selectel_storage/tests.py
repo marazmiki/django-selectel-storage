@@ -9,7 +9,6 @@ from django.core.files.base import ContentFile
 from django_selectel_storage.storage import SelectelStorage
 from django.utils import six
 import uuid
-import requests
 
 
 LAZY_FOX = 'The *quick* brown fox jumps over the lazy dog'
@@ -34,12 +33,32 @@ class ExistingFile(object):
 
 
 class TestBase(test.TestCase):
+    """
+    Base test class
+    """
+
     def setUp(self):
         self.storage = SelectelStorage()
         self.session_id = uuid.uuid4().hex
 
     def existing_file(self, filename, content=''):
         return ExistingFile(self, filename, content)
+
+
+class TestOverrideSettings(object):
+    """
+    Test cases for setting overrides
+    """
+    setting = ''
+    method = ''
+    value = None
+
+    def test_override_value(self):
+        value = self.value or 'new value'
+
+        with self.settings(**{self.setting: value}):
+            self.assertEquals(first=value,
+                              second=getattr(self.storage, self.method)())
 
 
 class TestListDirMethod(TestBase):
@@ -121,7 +140,7 @@ class TestSizeMethod(TestBase):
     def test_size_for_non_existing_file(self):
         def raise_exception():
             self.storage.size(self.session_id + '_non_exists.txt')
-        self.assertRaises(requests.exceptions.HTTPError, raise_exception)
+        self.assertRaises(IOError, raise_exception)
 
     def test_zero_size_file(self):
         with self.existing_file('zero_size.txt') as f:
@@ -159,6 +178,58 @@ class TestOpenMethod(TestBase):
             self.assertEquals(first=LAZY_FOX,
                               second=content.read())
 
+
+class TestGetAuthMethod(TestOverrideSettings, TestBase):
+    """
+    Tests for `get_auth` storage method
+    """
+    setting = 'SELECTEL_USERNAME'
+    method = 'get_auth'
+
+
+class TestGetKeyMethod(TestOverrideSettings, TestBase):
+    """
+    Tests for `get_key` storage method
+    """
+    setting = 'SELECTEL_PASSWORD'
+    method = 'get_key'
+
+
+class TestGetContainerNameMethod(TestOverrideSettings, TestBase):
+    """
+    Tests for `get_container_method` storage method
+    """
+    setting = 'SELECTEL_CONTAINER_NAME'
+    method = 'get_container_name'
+
+
+class TestGetContainerUrlMethod(TestOverrideSettings, TestBase):
+    """
+    Tests for `get_container_url` storage method
+    """
+    setting = 'SELECTEL_CONTAINER_URL'
+    method = 'get_container_url'
+
+
+class TestGetRequestsAdapterMethod(TestBase):
+    """
+    Tests for `get_requests_adapter` storage method
+    """
+
+
+class TestGetNameMethod(TestBase):
+    """
+    Tests for `_name` internal storage method
+    """
+    def test_add_leading_slash_if_not(self):
+        self.assertEquals('/index.html', self.storage._name('index.html'))
+
+    def test_not_add_leading_slash_if_not_need(self):
+        self.assertEquals('/index.html', self.storage._name('/index.html'))
+
+    def test_strip_excess_leading_slashes(self):
+        self.assertEquals('/index.html', self.storage._name('/////index.html'))
+
     # def get_auth(self, **kwargs):
     # def get_key(self, **kwargs):
     # def get_container_name(self, **kwargs):
@@ -166,13 +237,7 @@ class TestOpenMethod(TestBase):
     # def get_requests_adapter(self):
     # def mount_requests_adapter(self, prefix, adapter):
     # *def get_base_url(self):
+
     # def _name(self, name):
     # def _open(self, name, mode='rb'):
     # def _save(self, name, content):
-    #
-    #
-    # *def delete(self, name):
-    # *def exists(self, name):
-    # *def listdir(self, path):
-    # *def size(self, name):
-    # *def url(self, name):

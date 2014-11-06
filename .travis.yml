@@ -14,6 +14,7 @@ env:
 install:
   - pip install -q $DJANGO
   - pip install -q flake8
+  - pip install -q coveralls
   - python setup.py install
 
 before_script:

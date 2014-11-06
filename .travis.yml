@@ -14,14 +14,14 @@ env:
 install:
   - pip install -q $DJANGO
   - pip install -q flake8
-  - pip install -q coveralls
+  - pip install -q coveralls coverage
   - python setup.py install
 
 before_script:
   - make flake8
 
 script:
-  - make test
+  - make coverage
 
 after_success:
   - make coveralls

@@ -46,18 +46,28 @@ class TestListDirMethod(TestBase):
     """
     Tests for `listdir` storage method
     """
+
     def test_listdir_empty(self):
+        # Create unique directory to avoid race conditions during
+        # concurrent test running
+        self.storage.container.storage.session.put(
+            url='{storage}/{container}{path}'.format(
+                storage=self.storage.container.storage.auth.storage,
+                container=self.storage.container.name,
+                path=self.session_id
+            ),
+            headers={
+                'Content-Type': 'application/directory'
+            })
         self.assertEquals(
             first=([], []),
-            second=self.storage.listdir('/')
+            second=self.storage.listdir('/' + self.session_id)
         )
 
     def test_listdir_non_empty(self):
         with self.existing_file('file.img') as f:
-            self.assertEquals(
-                first=([], ['/' + f.filename]),
-                second=self.storage.listdir('/')
-            )
+            dirs, files = self.storage.listdir('/')
+            self.assertIn('/' + f.filename, files)
 
 
 class TestExistsMethod(TestBase):

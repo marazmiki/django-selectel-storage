@@ -61,7 +61,7 @@ class SelectelStorage(DjangoStorage):
     def get_base_url(self):
         base_url = self.get_container_url()
         if base_url:
-            return base_url
+            return base_url.rstrip('/')
         else:
             return '{netloc}/{container}'.format(
                 netloc=self.container.storage.auth.storage,

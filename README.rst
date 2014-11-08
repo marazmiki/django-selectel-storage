@@ -39,9 +39,16 @@ Installation
 .. code:: python
 
     DEFAULT_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
-    SELECTEL_CONTAINER_NAME = 'container_name'
+    SELECTEL_USERNAME = 'xxxxxx' 
     SELECTEL_PASSWORD = 'container_password'
-    SELECTEL_CONTAINER_URL = ''
+    SELECTEL_CONTAINER_NAME = 'container_name'
+
+If you have assigned custom domain with your selectel container, you need add
+the `SELECTEL_CONTAINER_NAME` attribute (trailing slash not matters)
+
+.. code:: python
+
+    SELECTEL_CONTAINER_URL = 'http://your.domain/'
 
 
 Caveats

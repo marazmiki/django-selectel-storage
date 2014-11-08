@@ -132,6 +132,18 @@ class TestUrlMethod(TestBase):
             storage = SelectelStorage()
             self.assertEquals(url, storage.get_base_url())
 
+    def test_container_custom_name_trailing_slash(self):
+        url = 'https://selectel.com'
+        with self.settings(SELECTEL_CONTAINER_URL=url + '/'):
+            storage = SelectelStorage()
+            self.assertEquals(url, storage.get_base_url())
+
+    def test_container_custom_name_trailing_slash_multiple(self):
+        url = 'https://selectel.com'
+        with self.settings(SELECTEL_CONTAINER_URL=url + '////'):
+            storage = SelectelStorage()
+            self.assertEquals(url, storage.get_base_url())
+
 
 class TestSizeMethod(TestBase):
     """

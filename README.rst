@@ -15,6 +15,19 @@ django-selectel-storage
 .. image:: https://pypip.in/d/django-selectel-storage/badge.png
     :target: https://pypi.python.org/pypi/django-selectel-storage
 
+.. image:: https://pypip.in/wheel/django-selectel-storage/badge.svg
+    :target: https://pypi.python.org/pypi/django-selectel-storage/
+    :alt: Wheel Status
+
+.. image:: https://pypip.in/py_versions/django-selectel-storage/badge.png
+    :target: https://pypi.python.org/pypi/django-selectel-storage/
+    :alt: Supported Python versions
+
+
+
+
+
+
 
 This application allows you easily save media and static files into Selectel cloud storage.
 

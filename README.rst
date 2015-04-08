@@ -5,15 +5,19 @@ django-selectel-storage
 
 .. image:: https://badge.fury.io/py/django-selectel-storage.png
     :target: http://badge.fury.io/py/django-selectel-storage
+    :alt:
 
 .. image:: https://travis-ci.org/marazmiki/django-selectel-storage.png?branch=master
     :target: https://travis-ci.org/marazmiki/django-selectel-storage
+    :alt: Travis CI build status
 
 .. image:: https://coveralls.io/repos/marazmiki/django-selectel-storage/badge.png?branch=master
     :target: https://coveralls.io/r/marazmiki/django-selectel-storage?branch=master
+    :alt: Code coverage percentage
 
 .. image:: https://pypip.in/d/django-selectel-storage/badge.png
     :target: https://pypi.python.org/pypi/django-selectel-storage
+    :alt: Latest version on PyPI
 
 .. image:: https://pypip.in/wheel/django-selectel-storage/badge.svg
     :target: https://pypi.python.org/pypi/django-selectel-storage/
@@ -22,7 +26,6 @@ django-selectel-storage
 .. image:: https://pypip.in/py_versions/django-selectel-storage/badge.png
     :target: https://pypi.python.org/pypi/django-selectel-storage/
     :alt: Supported Python versions
-
 
 
 

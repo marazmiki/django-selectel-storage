@@ -50,5 +50,9 @@ if __name__ == '__main__':
               'Environment :: Web Environment',
               'Programming Language :: Python',
               'Framework :: Django'
+              'Programming Language :: Python :: 2.7',
+              'Programming Language :: Python :: 3.3',
+              'Programming Language :: Python :: 3.4',
+              'Framework :: Django'
           ],
     )

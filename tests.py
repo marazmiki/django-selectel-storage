@@ -43,7 +43,8 @@ def main():
 
     find_pattern = 'django_selectel_storage'
 
-    test_runner = get_runner(settings)(verbosity=2, interactive=True, failfast=True)
+    test_runner = get_runner(settings)(verbosity=2, interactive=True,
+                                       failfast=True)
     failed = test_runner.run_tests([find_pattern])
     sys.exit(failed)
 

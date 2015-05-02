@@ -12,7 +12,7 @@ release:
 
 
 flake8:
-	flake8 ${project_name}
+	flake8 ${project_name} setup.py tests.py
 
 
 coverage:

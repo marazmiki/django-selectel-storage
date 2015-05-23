@@ -9,7 +9,7 @@ python:
 env:
   - DJANGO=django==1.6.11
   - DJANGO=django==1.7.8
-  - DJANGO=django==1.8.1
+  - DJANGO=django==1.8.2
 
 
 install:

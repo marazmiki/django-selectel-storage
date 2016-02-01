@@ -10,6 +10,7 @@ from django.conf import settings
 import os
 import selectel
 import requests
+import urllib.parse
 
 
 MAX_RETRIES = 3
@@ -104,7 +105,7 @@ class SelectelStorage(DjangoStorage):
             raise IOError('Unable get size for %s' % name)
 
     def url(self, name):
-        return os.path.join(self.get_base_url().rstrip('/'),  name.lstrip('/'))
+        return urllib.parse.urljoin(self.get_base_url().rstrip("/") + "/", name.lstrip('/'))
 
 
 class SelectelStaticStorage(SelectelStorage):

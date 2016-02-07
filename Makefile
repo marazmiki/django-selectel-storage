@@ -1,3 +1,4 @@
+.PHONY: test release flake8 coverage clean coveralls
 project_name=django_selectel_storage
 
 test:
@@ -16,7 +17,6 @@ flake8:
 
 
 coverage:
-	make clean
 	python setup.py develop
 	coverage run --rcfile=.coveragerc --include=${project_name}/* setup.py test
 	coverage html

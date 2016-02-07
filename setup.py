@@ -43,8 +43,8 @@ if __name__ == '__main__':
           packages=find_packages(),
           include_package_data=True,
           test_suite='tests.main',
-          install_requires=['requests', 'selectel-api'],
-          tests_require=['requests', 'selectel-api'],
+          install_requires=['django', 'requests', 'selectel-api'],
+          tests_require=['django', 'requests', 'selectel-api'],
           zip_safe=False,
           classifiers=[
               'Environment :: Web Environment',

@@ -1,3 +1,11 @@
+0.3
+-----
+
+* Drop older python verions support (vv 3.2, 3.3)
+* Drop older Django version support (1.6)
+* Use tox for testing
+
+
 0.2.2
 -----
 

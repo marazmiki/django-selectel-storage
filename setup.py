@@ -11,7 +11,7 @@ import os
 
 ROOT_PACKAGE = 'django-selectel-storage'
 DIR = os.path.dirname(__file__)
-VERSION = '0.2.2'
+VERSION = '0.3'
 DESCRIPTION = ('This application allows you easily save media and static '
                'files into selectel cloud storage')
 
@@ -51,6 +51,6 @@ if __name__ == '__main__':
               'Programming Language :: Python',
               'Framework :: Django',
               'Programming Language :: Python :: 2.7',
-              'Programming Language :: Python :: 3.3',
               'Programming Language :: Python :: 3.4',
+              'Programming Language :: Python :: 3.5',
           ])

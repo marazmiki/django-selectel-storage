@@ -1,5 +1,10 @@
-0.3
+0.3.1
 -----
+
+* Fix static storage settings
+
+0.3
+---
 
 * Drop older python verions support (vv 3.2, 3.3)
 * Drop older Django version support (1.6)

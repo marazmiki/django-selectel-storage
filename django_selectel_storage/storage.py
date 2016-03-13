@@ -108,5 +108,8 @@ class SelectelStorage(DjangoStorage):
 
 
 class SelectelStaticStorage(SelectelStorage):
-    container_name = setting('SELECTEL_STATIC_CONTAINER_NAME')
-    base_url = setting('SELECTEL_STATIC_BASE_URL')
+    def get_container_name(self, **kwargs):
+        return setting('SELECTEL_STATIC_CONTAINER_NAME')
+
+    def get_container_url(self, **kwargs):
+        return setting('SELECTEL_CONTAINER_BASE_URL')

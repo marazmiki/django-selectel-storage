@@ -22,12 +22,21 @@ def setting(name, default=None):
 
 
 class SelectelStorage(DjangoStorage):
-    def __init__(self, **kwargs):
-        self.container = selectel.storage.Container(
-            auth=self.get_auth(**kwargs),
-            key=self.get_key(**kwargs),
-            name=self.get_container_name(**kwargs))
-        self.setup_requests_adapter(**kwargs)
+
+    def __getstate__(self):
+        obj_dict = self.__dict__.copy()
+        obj_dict.pop('_container', None)
+        return obj_dict
+
+    @property
+    def container(self):
+        if not hasattr(self, '_container'):
+            self._container = selectel.storage.Container(
+                auth=self.get_auth(),
+                key=self.get_key(),
+                name=self.get_container_name())
+            self.setup_requests_adapter()
+        return self._container
 
     def get_auth(self, **kwargs):
         return setting('SELECTEL_USERNAME')

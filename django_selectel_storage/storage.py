@@ -74,6 +74,11 @@ class SelectelStorage(DjangoStorage):
     def _open(self, name, mode='rb'):
         return ContentFile(self.container.get(self._name(name)))
 
+    def save(self, name, content, max_length=None):
+        if isinstance(content, bytes):
+            content = ContentFile(content=content, name=name)
+        return super().save(name, content, max_length)
+
     def _save(self, name, content):
         # if six.PY3:
         #     self.container.put_stream_py3(self._name(name), content)

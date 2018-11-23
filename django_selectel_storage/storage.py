@@ -7,6 +7,7 @@ from __future__ import division
 from django.core.files.storage import Storage as DjangoStorage
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.utils.functional import cached_property
 import os
 import selectel
 import requests
@@ -110,6 +111,10 @@ class SelectelStorage(DjangoStorage):
 
     def url(self, name):
         return os.path.join(self.get_base_url().rstrip('/'),  name.lstrip('/'))
+
+    @cached_property
+    def base_url(self):
+        return self.get_base_url()
 
 
 class SelectelStaticStorage(SelectelStorage):

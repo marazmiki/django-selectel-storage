@@ -1,0 +1,11 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pytest-django = "*"
+tox = "*"
+flake8 = "*"
+pytest-isort = "*"
+"pytest-flake8" = "*"

@@ -1,21 +1,19 @@
-# coding: utf-8
-
 from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
+
+import uuid
 from django import test
 from django.core.files.base import ContentFile
 from django_selectel_storage.storage import SelectelStorage
 from django.utils import six
-import uuid
 
 
 LAZY_FOX = 'The *quick* brown fox jumps over the lazy dog'
-EMPTY_GIF = b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\xf0\x01\x00' \
-            b'\xff\xff\xff\x00\x00\x00\x21\xf9\x04\x01\x0a\x00\x00' \
-            b'\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02' \
-            b'\x44\x01\x00\x3b'
+EMPTY_GIF = (
+    b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\xf0\x01\x00'
+    b'\xff\xff\xff\x00\x00\x00\x21\xf9\x04\x01\x0a\x00\x00'
+    b'\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02'
+    b'\x44\x01\x00\x3b'
+)
 
 
 class ExistingFile(object):
@@ -45,7 +43,7 @@ class TestBase(test.TestCase):
         return ExistingFile(self, filename, content)
 
 
-class TestOverrideSettings(object):
+class OverrideSettings(object):
     """
     Test cases for setting overrides
     """
@@ -86,7 +84,7 @@ class TestListDirMethod(TestBase):
     def test_listdir_non_empty(self):
         with self.existing_file('file.img') as f:
             dirs, files = self.storage.listdir('/')
-            self.assertIn('/' + f.filename, files)
+            self.assertIn(f.filename, files)
 
 
 class TestExistsMethod(TestBase):
@@ -191,7 +189,7 @@ class TestOpenMethod(TestBase):
                               second=content.read())
 
 
-class TestGetAuthMethod(TestOverrideSettings, TestBase):
+class TestGetAuthMethod(OverrideSettings, TestBase):
     """
     Tests for `get_auth` storage method
     """
@@ -199,7 +197,7 @@ class TestGetAuthMethod(TestOverrideSettings, TestBase):
     method = 'get_auth'
 
 
-class TestGetKeyMethod(TestOverrideSettings, TestBase):
+class TestGetKeyMethod(OverrideSettings, TestBase):
     """
     Tests for `get_key` storage method
     """
@@ -207,7 +205,7 @@ class TestGetKeyMethod(TestOverrideSettings, TestBase):
     method = 'get_key'
 
 
-class TestGetContainerNameMethod(TestOverrideSettings, TestBase):
+class TestGetContainerNameMethod(OverrideSettings, TestBase):
     """
     Tests for `get_container_method` storage method
     """
@@ -215,7 +213,7 @@ class TestGetContainerNameMethod(TestOverrideSettings, TestBase):
     method = 'get_container_name'
 
 
-class TestGetContainerUrlMethod(TestOverrideSettings, TestBase):
+class TestGetContainerUrlMethod(OverrideSettings, TestBase):
     """
     Tests for `get_container_url` storage method
     """
@@ -241,15 +239,3 @@ class TestGetNameMethod(TestBase):
 
     def test_strip_excess_leading_slashes(self):
         self.assertEquals('/index.html', self.storage._name('/////index.html'))
-
-    # def get_auth(self, **kwargs):
-    # def get_key(self, **kwargs):
-    # def get_container_name(self, **kwargs):
-    # def get_container_url(self, **kwargs):
-    # def get_requests_adapter(self):
-    # def mount_requests_adapter(self, prefix, adapter):
-    # *def get_base_url(self):
-
-    # def _name(self, name):
-    # def _open(self, name, mode='rb'):
-    # def _save(self, name, content):

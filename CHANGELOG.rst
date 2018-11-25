@@ -1,3 +1,14 @@
+1.0
+---
+
+* Added support for Python 3.6x and 3.7;
+* Dropped support for older Django versions (the oldest one we supporting is 1.10)
+* Using ``tox`` and ``pytest`` utilities when developing
+* The ``setup.py`` became an one-liner. All the package metadata moved from ``setup.py`` to ``setup.cfg``
+* All the development utils configs (such as ``.rccoverage``, ``tox.ini`` and so on) also moved in the only ``setup.cfg`` file
+* License is MIT
+
+
 0.3.1
 -----
 

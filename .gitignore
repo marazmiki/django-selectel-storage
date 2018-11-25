@@ -1,3 +1,5 @@
+.env
+.idea/
 *.pyc
 *.coverage
 htmlcov
@@ -6,3 +8,4 @@ htmlcov
 build
 dist
 .tox
+.pytest_cache

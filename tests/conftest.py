@@ -10,6 +10,10 @@ def pytest_configure():
     """
     from django.conf import settings
 
+    os.environ['SELECTEL_USERNAME'] = '9640_test'
+    os.environ['SELECTEL_CONTAINER_NAME'] = 'test_django_selectel_storage'
+    os.environ['SELECTEL_PASSWORD'] = '3lMUkJbFQp'
+
     username = os.getenv('SELECTEL_USERNAME')
     password = os.getenv('SELECTEL_PASSWORD')
     container = os.getenv('SELECTEL_CONTAINER_NAME')
@@ -24,6 +28,11 @@ def pytest_configure():
         },
         SELECTEL_STORAGES={
             'default': {
+                'USERNAME': username,
+                'PASSWORD': password,
+                'CONTAINER': container,
+            },
+            'customized': {
                 'USERNAME': username,
                 'PASSWORD': password,
                 'CONTAINER': container,
@@ -60,18 +69,24 @@ def create_file(selectel_storage):
     from django.core.files.base import ContentFile
     from django.utils import six
 
-    def inner(filename, content=b'', prefix=''):
+    created_records = []
+
+    def file_creator(filename, content=b'', prefix=''):
         if all((
             six.PY3,
             isinstance(content, six.text_type)
         )):
             content = content.encode('UTF-8')
-        col = str(uuid.uuid4())
-        key = os.path.join(prefix.lstrip('/') or col, filename)
+        container = str(uuid.uuid4())
+        key = os.path.join(prefix.lstrip('/') or container, filename)
         selectel_storage.save(key, ContentFile(content, key))
-        yield key
+        created_records.append(key)
+        return key
+
+    yield file_creator
+
+    for key in created_records:
         selectel_storage.delete(key)
-    return inner
 
 
 @pytest.fixture

@@ -1,8 +1,7 @@
-import requests
-
 from datetime import datetime, timedelta
 from logging import getLogger as get_logger
-
+from django.utils.module_loading import import_string
+import requests
 
 log = get_logger('selectel')
 now = datetime.now
@@ -14,11 +13,31 @@ class Auth:
     THRESHOLD = 300
     AUTH_URL = 'https://auth.selcdn.ru/'
 
-    def __init__(self, requests):
+    def __init__(self, config, requests):
+        self.config = config
         self.requests = requests
         self.token = ''
         self.storage_url = ''
         self.expires = now()
+
+    @property
+    def user(self):
+        return self.config['USERNAME']
+
+    @property
+    def key(self):
+        return self.config['PASSWORD']
+
+    @property
+    def container_name(self):
+        return self.config['CONTAINER']
+
+    def build_url(self, key):
+        return '{storage_url}/{name}/{key}'.format(
+            storage_url=self.storage_url.rstrip('/'),
+            name=self.container_name.strip('/'),
+            key=key.lstrip('/'),
+        )
 
     def is_expired(self):
         return (self.expires - now()).total_seconds() < self.THRESHOLD
@@ -35,7 +54,7 @@ class Auth:
         self.token = new_token
 
     def authenticate(self):
-        log.debug('Need to authentificate with %s:%s', self.user, self.key)
+        log.debug('Need to authenticate with %s:%s', self.user, self.key)
         resp = self.requests.get(self.AUTH_URL, headers={
             'X-Auth-User': self.user,
             'X-Auth-Key': self.key
@@ -48,51 +67,68 @@ class Auth:
         self.update_expires(resp.headers['X-Expire-Auth-Token'])
         self.update_auth_token(resp.headers['X-Auth-Token'])
 
-    def make_request(self, http_method, path, data=None):
+    def perform_request(self, http_method, key,
+                        raise_exception=False, **kwargs):
         self.renew_if_need()
-        url = self.build_url(path)
-        handler = getattr(self.requests, http_method)
-
-        resp = handler(url, data=data)  # type: requests.Response
-        resp.raise_for_status()
+        resp = getattr(self.requests, http_method)(
+            self.build_url(key),
+            **kwargs
+        )  # type: requests.Response
+        if raise_exception:
+            resp.raise_for_status()
+        return resp
 
 
 class Container:
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
         self.requests = self.get_requests()  # type: requests.Session
-        self.auth = Auth(self.requests)
-        self.container = 'todo'
+        self.auth = Auth(self.config, self.requests)
+
+    @property
+    def name(self):
+        return self.auth.container_name
 
     def get_requests(self):
-        return requests.Session()
+        return import_string(self.config.get(
+            'REQUESTS_FACTORY',
+            'django_selectel_storage.utils.requests_factory'
+        ))(self.config)
 
     def build_url(self, key):
-        return '{storage_url}/{container_name}{key}'.format(
-            storage_url=self.auth.storage_url,
-            container_name=self.container,
-            key=key,
-        )
+        return self.auth.build_url(key)
 
-    def get(self, key):
-        url = "%s/%s%s" % (self.auth.storage, container, path)
-        r = self.session.get(url, headers=headers, verify=True)
-        r.raise_for_status()
-        return r.content
+    def perform_request(self, http_method, key,
+                        raise_exception=False, **kwargs):
+        return self.auth.perform_request(http_method, key,
+                                         raise_exception=raise_exception,
+                                         **kwargs)
 
-    def save(self, key, content):
-        return self.auth.make_request
+    def open(self, key):
+        return self.perform_request('get', key, raise_exception=True,
+                                    stream=True).raw
+
+    def save(self, key, content, metadata=None):
+        self.perform_request('put', key, data=content, raise_exception=True)
+        return key
 
     def delete(self, key):
-        pass
+        self.perform_request('delete', key, raise_exception=False)
 
     def size(self, key):
         try:
-            return self.container.info(self._name(name))['content-length']
+            resp = self.perform_request('head', key, raise_exception=True)
+            return int(resp.headers['Content-Length'])
         except requests.exceptions.HTTPError:
-            raise IOError('Unable get size for %s' % name)
+            raise IOError('Failed to get file size of {}'.format(key))
 
     def exists(self, key):
-        pass
+        return self.perform_request('head', key).status_code == 200
 
-    def list(self):
-        pass
+    def list(self, key):
+        return {
+            x['name']: x for x in self.perform_request('get', '', params={
+                'format': 'json',
+                'prefix': key
+            }).json()
+        }

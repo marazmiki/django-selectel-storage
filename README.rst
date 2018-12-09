@@ -3,7 +3,7 @@ django-selectel-storage
 =======================
 
 
-.. image:: https://travis-ci.org/marazmiki/django-selectel-storage.svg?branch=master
+.. image:: https://travis-ci.org/marazmiki/django-selectel-storage.svg?branch=branch
      :target: https://travis-ci.org/marazmiki/django-selectel-storage
      :alt: Travis CI building status
 
@@ -16,7 +16,7 @@ django-selectel-storage
      :alt: PyPI release
 
 .. image:: https://img.shields.io/pypi/pyversions/django-selectel-storage.svg
-     :target: https://img.shields.io/pypi/pyversions/django-selectel-storage.svg
+     :target: https://img.shields.io/pypi/pyversions/django-selectel-storage.svg?branch=novodel
      :alt: Supported Python versions
 
 .. image:: https://readthedocs.org/projects/django-selectel-storage/badge/?version=latest
@@ -30,7 +30,6 @@ Dependencies
 ------------
 
 * `requests <http://docs.python-requests.org/en/latest/>`_ library
-* `selectel-api <https://pypi.python.org/pypi/selectel-api>`_ by Kirill Goldshtein
 
 Installation
 ------------
@@ -47,9 +46,19 @@ Installation
 .. code:: python
 
     DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
-    SELECTEL_USERNAME = 'xxxxxx'
-    SELECTEL_PASSWORD = 'container_password'
-    SELECTEL_CONTAINER_NAME = 'container_name'
+    SELECTEL_STORAGES = {
+        'default': {
+            'USERNAME': 'xxxx_user1',
+            'PASSWORD': 'secret',
+            'CONTAINER_NAME': 'bucket',
+        },
+        'yet-another-schema': {
+            'USERNAME': 'yyyy_user2',
+            'PASSWORD': 'mystery',
+            'CONTAINER_NAME': 'box',
+
+        },
+    }
 
 If you have assigned custom domain with your selectel container, you need add
 the `SELECTEL_CONTAINER_NAME` attribute (trailing slash not matters)

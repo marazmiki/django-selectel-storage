@@ -1,28 +1,19 @@
-import os
-
-import requests
-
 from django.core.files import base, storage
 
 from .selectel import Container
 from .utils import read_config
 
 
-MAX_RETRIES = 3
-POOL_CONNECTIONS = 50
-POOL_MAXSIZE = 50
-
-
 class SelectelStorage(storage.Storage):
     def __init__(self, *args, **kwargs):
         self.config = read_config(args, kwargs)
-        self.container = Container()
+        self.container = Container(self.config)
 
     def _open(self, name, mode='rb'):
-        return base.ContentFile(self.container.open(name))
+        return base.ContentFile(self.container.open(name).read())
 
     def _save(self, name, content):
-        self.container.save(name, content)
+        self.container.save(name, content, metadata=None)
         return name
 
     def delete(self, name):
@@ -32,26 +23,31 @@ class SelectelStorage(storage.Storage):
         return self.container.exists(name)
 
     def listdir(self, path):
-        items = self.container.list(path)
-        return (
-            [],
-            [i[len(path):].lstrip('/') for i in items.keys()
-             if len(i) > len(path)]
-        )
+        dirs, files = set(), set()
+        results = self.container.list(path)
+        for key, metadata in results.items():
+            bits = key[len(path):].lstrip('/').split('/')
+            (dirs if len(bits) > 1 else files).add(bits[0])
+        return list(dirs), list(files)
 
     def size(self, name):
         return self.container.size(name)
 
     def url(self, name):
-        base_url = self.get_container_url()
-        if base_url:
-            base_url = base_url.rstrip('/')
+        if not self.config.get('CUSTOM_DOMAIN'):
+            return self.container.build_url(name)
         else:
-            base_url = '{netloc}/{container}'.format(
-                netloc=self.auth.storage,
-                container=self.get_container_name()
+            custom_domain = self.config['CUSTOM_DOMAIN'].rstrip('/')
+            if not custom_domain.lower().startswith(('http://', 'https://')):
+                custom_domain = 'https://{0}'.format(custom_domain)
+            return '{custom_domain}/{name}'.format(
+                custom_domain=custom_domain,
+                name=name.strip('/'),
             )
-        return os.path.join(base_url.rstrip('/'),  name.lstrip('/'))
+
+    def save_with_metadata(self, name, content, metadata=None):
+        self.container.save(name, content, metadata=metadata)
+        return name
 
 
 class SelectelStaticStorage(SelectelStorage):

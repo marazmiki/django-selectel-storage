@@ -1,8 +1,9 @@
 import tempfile
 import uuid
+
 import pytest
-from django.utils import six
 from django.core.files import uploadedfile
+from django.utils import six
 
 
 @pytest.fixture
@@ -67,7 +68,6 @@ def test_save_fileobj(selectel_storage, request, file_id, fixture_name):
     fileobj = request.getfixturevalue(fixture_name)(filename, content)
     selectel_storage.save(filename, fileobj)
 
-    print(fileobj)
     with selectel_storage.open(filename) as f:
         f.seek(0)
         assert f.read() == content
@@ -84,4 +84,4 @@ def test_save_seeked_fileobj(selectel_storage, request, file_id, fixture_name):
     selectel_storage.save(filename, fileobj)
 
     with selectel_storage.open(filename) as f:
-        assert f.read() == content[3:]
+        assert f.read() == content

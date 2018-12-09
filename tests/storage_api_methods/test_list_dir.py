@@ -1,5 +1,6 @@
 import os
 import uuid
+
 import pytest
 
 
@@ -10,11 +11,9 @@ def test_listdir_not_found(selectel_storage):
 @pytest.mark.parametrize(
     argnames='var_name, expected_items',
     argvalues=[
-        ('files', {'file.img', 'hello.pdf'}),
-        ('dirs', set()),
-    ],
-
-    ids=['files', 'directories - always empty']
+        pytest.param('files', {'file.img', 'hello.pdf'}, id='files'),
+        pytest.param('dirs', {'hello'}, id='dirs - it\'s always empty'),
+    ]
 )
 def test_listdir_works(
         selectel_storage,
@@ -29,5 +28,4 @@ def test_listdir_works(
         create_file(root + f, prefix=prefix)
 
     dirs, files = selectel_storage.listdir(os.path.join(prefix, root))
-
     assert {_ for _ in locals()[var_name]} == expected_items

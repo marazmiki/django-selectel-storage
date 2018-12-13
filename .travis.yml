@@ -13,7 +13,7 @@ matrix:
       dist: xenial
 
 install:
-  - pip install -qU coveralls
+  - pip install -qU tox coveralls
   - pip install -e .
 
 script:

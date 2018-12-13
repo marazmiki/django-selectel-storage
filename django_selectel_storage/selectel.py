@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from logging import getLogger as get_logger
-from django.utils.module_loading import import_string
+
 import requests
+from django.utils.module_loading import import_string
 
 log = get_logger('selectel')
 now = datetime.now

@@ -5,7 +5,7 @@ from django_selectel_storage import exceptions as exs
 from django_selectel_storage.storage import SelectelStorage
 from django_selectel_storage.utils import parse_dsn
 
-OPTS ={
+OPTS = {
     'MAX_RETRIES': 3,
     'POOL_CONNECTIONS': 50,
     'POOL_MAXSIZE': 50,

@@ -7,11 +7,17 @@ python:
   - "3.6"
   - "3.7"
 
+matrix:
+  include:
+    - python: 3.7
+      dist: xenial
+
 install:
-  - pip install -qU tox tox-travis  coverage coveralls
+  - pip install -qU coveralls
+  - pip install -e .
 
 script:
-  - tox
+   - for i in $(tox -l | grep "$(python --version 2>&1 | cut -d ' ' -f 2 | sed -e 's/\.//g' | head -c 2)"); do tox -e "$i"; done
 
 after_success:
   - coveralls

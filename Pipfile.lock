@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b3f7d093e9f32c84036bcba31e72b9e7394e589d8eae44ab024f5264178bb865"
+            "sha256": "cc75b15bbbf1746181881ed55b259859dfb8c07d6f3dd7877daa404d71344773"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -80,10 +80,10 @@
         },
         "idna": {
             "hashes": [
-                "sha256:156a6814fb5ac1fc6850fb002e0852d56c0c8d2531923a51032d1b70760e186e",
-                "sha256:684a38a6f903c1d71d6d5fac066b58d7768af4de2b832e426ec79c30daa94a16"
+                "sha256:c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407",
+                "sha256:ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"
             ],
-            "version": "==2.7"
+            "version": "==2.8"
         },
         "imagesize": {
             "hashes": [
@@ -91,14 +91,6 @@
                 "sha256:f3832918bc3c66617f92e35f5d70729187676313caa60c187eb0f28b8fe5e3b5"
             ],
             "version": "==1.1.0"
-        },
-        "isort": {
-            "hashes": [
-                "sha256:1153601da39a25b14ddc54955dbbacbb6b2d19135386699e2ad58517953b34af",
-                "sha256:b9c40e9750f3d77e6e4d441d8b0266cf555e7cdabdcff33c4fd06366ca761ef8",
-                "sha256:ec9ef8f4a9bc6f71eec99e1806bfa2de401650d996c59330782b89a5555c1497"
-            ],
-            "version": "==4.3.4"
         },
         "jinja2": {
             "hashes": [
@@ -218,20 +210,6 @@
             ],
             "version": "==3.4.4"
         },
-        "pytest-flake8": {
-            "hashes": [
-                "sha256:4f30f5be3efb89755f38f11bdb2a5e22d19a6f5faa73428f703a3292a9572cd3",
-                "sha256:c740ad6aa19e3958947d2118f70bed218caf1d2097039fb7318573a2a72f89a1"
-            ],
-            "version": "==1.0.2"
-        },
-        "pytest-isort": {
-            "hashes": [
-                "sha256:2221c0914dfca41914625a646f0d2d1d4c676861b9a7b26746a7fdd40aa2c59b",
-                "sha256:c70d0f900f4647bb714f0843dd82d7f7b759904006de31254efdb72ce88e0c0e"
-            ],
-            "version": "==0.2.1"
-        },
         "pytz": {
             "hashes": [
                 "sha256:31cb35c89bd7d333cd32c5f278fca91b523b0834369e757f4c5641ea252236ca",
@@ -241,17 +219,17 @@
         },
         "requests": {
             "hashes": [
-                "sha256:65b3a120e4329e33c9889db89c80976c5272f56ea92d3e74da8a463992e3ff54",
-                "sha256:ea881206e59f41dbd0bd445437d792e43906703fff75ca8ff43ccdb11f33f263"
+                "sha256:502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e",
+                "sha256:7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"
             ],
-            "version": "==2.20.1"
+            "version": "==2.21.0"
         },
         "six": {
             "hashes": [
-                "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9",
-                "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb"
+                "sha256:3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c",
+                "sha256:d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"
             ],
-            "version": "==1.11.0"
+            "version": "==1.12.0"
         },
         "snowballstemmer": {
             "hashes": [

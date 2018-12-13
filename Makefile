@@ -13,6 +13,11 @@ release:
 flake8:
 	pipenv run flake8 .
 
+.PHONY: isort
+isort:
+	isort --check-only --diff --recursive --skip .tox
+
+
 .PHONY: clean
 clean:
 	rm -rf *.egg-info *.egg

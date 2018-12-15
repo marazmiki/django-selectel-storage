@@ -30,7 +30,7 @@ install:
   - pip install -e .
 
 script:
-   - tox
+  - tox --cov-branch --cov-append
 
 after_success:
   - coveralls

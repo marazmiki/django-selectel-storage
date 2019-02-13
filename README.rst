@@ -26,10 +26,6 @@ django-selectel-storage
 
 This application allows you easily save media and static files into Selectel cloud storage.
 
-Dependencies
-------------
-
-* `requests <http://docs.python-requests.org/en/latest/>`_ library
 
 Installation
 ------------

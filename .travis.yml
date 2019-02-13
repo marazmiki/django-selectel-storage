@@ -30,6 +30,7 @@ install:
   - pip install -e .
 
 script:
-        - tox -- --cov=. --cov-branch --cov-append
+  - tox -- --isort --flake8 --cov=. --cov-branch --cov-append
+
 after_success:
   - coveralls

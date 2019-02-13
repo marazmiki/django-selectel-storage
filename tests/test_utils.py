@@ -56,9 +56,9 @@ def test_parse_dsn_exceptions(dsn, exc):
     }, id='a custom domain given')
 ])
 def test_parse_dsn(dsn, expected_pairs):
-        results = parse_dsn(dsn)
-        for k, v in expected_pairs.items():
-            assert results[k] == v
+    results = parse_dsn(dsn)
+    for k, v in expected_pairs.items():
+        assert results[k] == v
 
 
 @pytest.mark.parametrize('args, kwargs, expected', [

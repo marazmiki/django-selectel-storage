@@ -67,14 +67,14 @@ def create_file(selectel_storage):
     container and then deletes it (the file) after a test case finished
     """
     from django.core.files.base import ContentFile
-    from django.utils import six
+    from django_selectel_storage.compat import PY3, TEXT_TYPE
 
     created_records = []
 
     def file_creator(filename, content=b'', prefix=''):
         if all((
-            six.PY3,
-            isinstance(content, six.text_type)
+            PY3,
+            isinstance(content, TEXT_TYPE)
         )):
             content = content.encode('UTF-8')
         container = str(uuid.uuid4())

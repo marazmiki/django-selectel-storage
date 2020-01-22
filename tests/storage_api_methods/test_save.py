@@ -1,9 +1,11 @@
+import io
 import tempfile
 import uuid
 
 import pytest
 from django.core.files import uploadedfile
-from django.utils import six
+
+from django_selectel_storage.compat import b
 
 
 @pytest.fixture
@@ -25,7 +27,7 @@ def simple_file():
 def in_memory_file():
     def inner(filename, content):
         return uploadedfile.InMemoryUploadedFile(
-            file=six.BytesIO(content),
+            file=io.BytesIO(content),
             field_name='test_field',
             name='_save_new_file.txt',
             content_type='text/plain',
@@ -63,7 +65,7 @@ parametrize = pytest.mark.parametrize(
 @parametrize
 def test_save_fileobj(selectel_storage, request, file_id, fixture_name):
     filename = 'save_new_file_{0}.txt'.format(file_id)
-    content = six.b('test content one')
+    content = b('test content one')
 
     fileobj = request.getfixturevalue(fixture_name)(filename, content)
     selectel_storage.save(filename, fileobj)
@@ -76,7 +78,7 @@ def test_save_fileobj(selectel_storage, request, file_id, fixture_name):
 @parametrize
 def test_save_seeked_fileobj(selectel_storage, request, file_id, fixture_name):
     filename = 'save_new_file_{0}.txt'.format(file_id)
-    content = six.b('test content one')
+    content = b('test content one')
 
     fileobj = request.getfixturevalue(fixture_name)(filename, content)
     fileobj.seek(0)

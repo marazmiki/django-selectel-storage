@@ -9,4 +9,5 @@ build
 dist
 .tox
 .pytest_cache
+.python-version
 docs/build

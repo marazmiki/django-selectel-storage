@@ -27,7 +27,8 @@ matrix:
 
 
 script:
-  - tox -- --isort --flake8 --cov=. --cov-branch --cov-append
+  - tox -- --isort --flake8 --cov=. --cov-config setup.cfg --cov-report term-missing --cov-report term:skip-covered --cov-append --cov-branch
+
 
 install:
   - pip install -q tox tox-travis poetry tox-pyenv

@@ -1,7 +1,16 @@
-package = []
+[[package]]
+category = "dev"
+description = "Version-bump your software with a single command!"
+name = "bump2version"
+optional = false
+python-versions = "*"
+version = "0.5.10"
 
 [metadata]
-content-hash = "8ca33ab57889d4f715a98a2b8b7dd159c7bcd2f36a9a75f30340937133f93c1b"
-python-versions = "^2.7 || ^3"
+content-hash = "e1a53ce041354cccc99e36cbf704115a2a300c902207d7bc4c116c9d96568378"
+python-versions = "^2.7 || ~3"
 
 [metadata.files]
+bump2version = [
+    {file = "bump2version-0.5.10-py2.py3-none-any.whl", hash = "sha256:185abfd0d8321ec5059424d8b670aa82f7385948ff7ddd986981b4ed04dc819a"},
+]

@@ -35,9 +35,10 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-python = "^2.7 || ~3"
+python = "^2.7 || ^3.5 || ^3.6 || ^3.7 || ^3.8"
 
 [tool.poetry.dev-dependencies]
+bump2version = "^0"
 
 [build-system]
 requires = ["poetry>=0.12"]

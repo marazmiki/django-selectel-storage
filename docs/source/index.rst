@@ -9,7 +9,6 @@ django-selectel-storage
 
    introduction
    install
-   usage
    configuration
    changelog
 

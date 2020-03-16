@@ -72,3 +72,4 @@ Installation
         },
     }
 
+Please see details in the `documentation <https://django-selectel-storage.readthedocs.io/en/latest/>`_.

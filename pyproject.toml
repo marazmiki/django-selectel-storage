@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-selectel-storage"
-version = "0.3.2"
+version = "1.0.0"
 description = "A Django storage backend allowing you to easily save user-generated and static files inside Selectel Cloud storage rather than a local filesystem, as Django does by default."
 authors = [
     "Mikhail Porokhovnichenko <marazmiki@gmail.com>"

@@ -1,26 +1,32 @@
-.PHONY: test
-test:
-	pipenv run pytest
-
+.PHONY: check
+check:
+	poetry build
+	twine check dist/*
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 .PHONY: release
 release:
-	python setup.py sdist --format=zip,bztar,gztar register upload
-	python setup.py bdist_wheel register upload
+	make check
+	twine upload dist/*
+
+.PHONY: push
+push:
+	git push origin master --tags
 
 
-.PHONY: flake8
-flake8:
-	pipenv run flake8 .
-
-.PHONY: isort
-isort:
-	isort --check-only --diff --recursive --skip .tox
+.PHONY: patch
+patch:
+	echo "Making a patch release"
+	poetry run bump2version patch
 
 
-.PHONY: clean
-clean:
-	rm -rf *.egg-info *.egg
-	rm -rf htmlcov
-	rm -f .coverage
-	find . -name "*.pyc" -exec rm -rf {} \;
+.PHONY: minor
+minor:
+	echo "Making a minor release"
+	poetry run bump2version minor
+
+
+.PHONY: major
+major:
+	echo "Making a MAJOR release"
+	poetry run bump2version major

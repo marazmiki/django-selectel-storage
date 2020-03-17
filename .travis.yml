@@ -31,7 +31,7 @@ script:
 
 
 install:
-  - pip install -q tox tox-travis poetry tox-pyenv
+  - pip install -q tox tox-travis poetry tox-pyenv coveralls
 
 after_success:
   - coveralls

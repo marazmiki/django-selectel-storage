@@ -4,6 +4,13 @@ Changelog
 1.x
 ---
 
+1.0.1
+-----
+
+* Fixed an issue when accessing a container without explicit authentication (thanks to `Alexey Kotenko <Alexey Kotenko
+>`_ for reporting)
+* Added ``requests`` as a required dependency.
+
 1.0
 ~~~
 

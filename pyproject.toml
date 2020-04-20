@@ -36,6 +36,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^2.7 || ^3.5 || ^3.6 || ^3.7 || ^3.8"
+requests = "^2.23.0"
 
 [tool.poetry.dev-dependencies]
 bump2version = "^0"

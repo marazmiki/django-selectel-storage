@@ -34,6 +34,7 @@ class Auth:
         return self.config['CONTAINER']
 
     def build_url(self, key):
+        self.renew_if_need()
         return '{storage_url}/{name}/{key}'.format(
             storage_url=self.storage_url.rstrip('/'),
             name=self.container_name.strip('/'),
@@ -44,7 +45,7 @@ class Auth:
         return (self.expires - now()).total_seconds() < self.THRESHOLD
 
     def renew_if_need(self):
-        if self.is_expired():
+        if self.is_expired() or not self.storage_url:
             self.authenticate()
 
     def update_expires(self, delta):

@@ -1,4 +1,5 @@
 .env
+.devdata.env
 .idea/
 *.pyc
 *.coverage

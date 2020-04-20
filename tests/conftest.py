@@ -10,10 +10,6 @@ def pytest_configure():
     """
     from django.conf import settings
 
-    os.environ['SELECTEL_USERNAME'] = '9640_test'
-    os.environ['SELECTEL_CONTAINER_NAME'] = 'test_django_selectel_storage'
-    os.environ['SELECTEL_PASSWORD'] = '3lMUkJbFQp'
-
     username = os.getenv('SELECTEL_USERNAME')
     password = os.getenv('SELECTEL_PASSWORD')
     container = os.getenv('SELECTEL_CONTAINER_NAME')

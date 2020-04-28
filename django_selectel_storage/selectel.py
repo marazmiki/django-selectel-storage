@@ -76,6 +76,10 @@ class Auth:
             self.build_url(key),
             **kwargs
         )  # type: requests.Response
+        if resp.status_code == 401:
+            log.debug('Got an unexpected 401 error, reauthenticate.')
+            self.authenticate()
+            return self.perform_request(http_method, key, raise_exception, **kwargs)
         if raise_exception:
             resp.raise_for_status()
         return resp

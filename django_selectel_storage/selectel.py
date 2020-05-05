@@ -1,8 +1,11 @@
+import io
 from datetime import datetime, timedelta
 from logging import getLogger as get_logger
 
 import requests
 from django.utils.module_loading import import_string
+
+from .compat import TEXT_TYPE
 
 log = get_logger('selectel')
 now = datetime.now
@@ -79,7 +82,8 @@ class Auth:
         if resp.status_code == 401:
             log.debug('Got an unexpected 401 error, reauthenticate.')
             self.authenticate()
-            return self.perform_request(http_method, key, raise_exception, **kwargs)
+            return self.perform_request(http_method, key, raise_exception,
+                                        **kwargs)
         if raise_exception:
             resp.raise_for_status()
         return resp
@@ -138,3 +142,16 @@ class Container:
                 'prefix': key
             }).json()
         }
+
+    def send_me_file(self, filename, size):
+        headers = {
+            'Content-Type': 'x-storage/sendmefile+inplace',
+            'X-Object-Meta-Sendmefile-Max-Size': TEXT_TYPE(size),
+            'X-Object-Meta-Sendmefile-Disable-Web': 'yes',
+            'X-Object-Meta-Sendmefile-Allow-Overwrite': 'no',
+            'X-Object-Meta-Sendmefile-Ignore-Filename': 'yes',
+            'X-Filename': '/' + TEXT_TYPE(filename),
+        }
+        self.perform_request('put', filename, data=io.BytesIO(),
+                             headers=headers, raise_exception=True)
+        return self.build_url(filename)

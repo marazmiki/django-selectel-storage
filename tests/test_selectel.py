@@ -1,10 +1,10 @@
+import io
+import uuid
+
 import pytest
+import requests
 
-from django_selectel_storage import selectel
-
-
-def test_auth_if_empty_storage_url():
-    pass
+from django_selectel_storage import selectel, utils
 
 
 @pytest.mark.parametrize(
@@ -80,3 +80,23 @@ def test_build_url(monkeypatch):
     assert (
         auth.build_url('index.html') == 'https://example.com/bucket/index.html'
     )
+
+
+def test_send_me_file():
+    container = selectel.Container(
+        config=utils.read_config([], {})
+    )
+    identifier = str(uuid.uuid4())
+
+    filename = 'send_me_file-' + identifier + '.txt'
+    contents = b'This is content of ' + filename.encode()
+
+    public_upload_link = container.send_me_file(filename, len(contents))
+
+    assert public_upload_link == container.build_url(filename)
+
+    resp = requests.put(public_upload_link, io.BytesIO(contents))
+    assert resp.status_code == 201
+
+    resp = requests.get(public_upload_link)
+    assert resp.content == contents

@@ -4,11 +4,17 @@ Changelog
 1.x
 ---
 
+1.0.2
+-----
+
+* A new feature ``sendmefile`` implementation to make direct upload to a container.
+* Fixed an issue when authentication gets disappeared in some cases (#10, thanks to `@idealatom <https://github.com/idealatom>`_ for PR);
+* Fixed some misspells in docs;
+
 1.0.1
 -----
 
-* Fixed an issue when accessing a container without explicit authentication (thanks to `Alexey Kotenko <Alexey Kotenko
->`_ for reporting)
+* Fixed an issue when accessing a container without explicit authentication (thanks to `Alexey Kotenko <https://github.com/k0t3n>`_ for reporting)
 * Added ``requests`` as a required dependency.
 
 1.0

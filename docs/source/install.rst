@@ -18,7 +18,7 @@ or via `pipenv <https://pipenv.readthedocs.io/>`_:
     $ pipenv install django-selectel-storage
 
 
-or even via `poetry <https://poetry.com>`_:
+or even via `poetry <https://python-poetry.org/>`_:
 
 .. code:: bash
 

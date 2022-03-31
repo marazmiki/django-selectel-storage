@@ -67,7 +67,7 @@ Installation
         'yet-another-schema': {
             'USERNAME': 'yyyy_user2',
             'PASSWORD': 'mystery',
-            'CONTAINER_NAME': 'box',
+            'CONTAINER': 'box',
 
         },
     }
